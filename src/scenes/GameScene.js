@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import { playCoin, playStart, playHit, playGameOver } from '../audio/sfx.js'
 
 const PLAYER_SPEED = 320
 const COIN_INTERVAL = 900
@@ -31,6 +32,10 @@ export class GameScene extends Phaser.Scene {
 
     this.cursors = this.input.keyboard.createCursorKeys()
     this.wasd = this.input.keyboard.addKeys('W,A,S,D')
+
+    this.input.keyboard.on('keydown-M', () => {
+      this.sound.mute = !this.sound.mute
+    })
 
     this.physics.add.overlap(
       this.player,
@@ -95,12 +100,15 @@ export class GameScene extends Phaser.Scene {
     coin.destroy()
     this.score += 1
     this.scoreText.setText(`Score: ${this.score}`)
+    playCoin(this.sound)
   }
 
   hitSpike() {
     this.isGameOver = true
     this.physics.pause()
     this.player.setTint(0xff0000)
+    playHit(this.sound)
+    playGameOver(this.sound)
 
     const { width, height } = this.scale
     this.add
@@ -125,6 +133,9 @@ export class GameScene extends Phaser.Scene {
       })
       .setOrigin(0.5)
 
-    this.input.keyboard.once('keydown-SPACE', () => this.scene.restart())
+    this.input.keyboard.once('keydown-SPACE', () => {
+      playStart(this.sound)
+      this.scene.restart()
+    })
   }
 }

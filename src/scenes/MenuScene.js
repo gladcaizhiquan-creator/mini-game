@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import { playStart } from '../audio/sfx.js'
 
 export class MenuScene extends Phaser.Scene {
   constructor() {
@@ -32,6 +33,21 @@ export class MenuScene extends Phaser.Scene {
       repeat: -1,
     })
 
-    this.input.keyboard.once('keydown-SPACE', () => this.scene.start('GameScene'))
+    this.input.keyboard.once('keydown-SPACE', () => {
+      playStart(this.sound)
+      this.scene.start('GameScene')
+    })
+
+    this.input.keyboard.on('keydown-M', () => {
+      this.sound.mute = !this.sound.mute
+    })
+
+    this.add
+      .text(width / 2, height - 24, 'M: mute / unmute', {
+        fontFamily: 'Arial, sans-serif',
+        fontSize: '16px',
+        color: '#6b7280',
+      })
+      .setOrigin(0.5)
   }
 }
