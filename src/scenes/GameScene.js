@@ -70,11 +70,11 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    this.coins.children.iterate((coin) => {
-      if (coin && coin.y > this.scale.height + 40) coin.destroy()
+    this.coins.getChildren().forEach((coin) => {
+      if (coin.y > this.scale.height + 40) coin.destroy()
     })
-    this.spikes.children.iterate((spike) => {
-      if (spike && spike.y > this.scale.height + 40) spike.destroy()
+    this.spikes.getChildren().forEach((spike) => {
+      if (spike.y > this.scale.height + 40) spike.destroy()
     })
   }
 
